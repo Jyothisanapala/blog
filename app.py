@@ -7,12 +7,13 @@ from key import secret_key,salt,salt2
 from otp import uotp
 from cmail import sendmail
 import os
+import re
 app=Flask(__name__)
 app.config['SESSION_TYPE']='filesystem'
 Session(app)
 app.secret_key=secret_key
-#mydb=mysql.connector.connect(host='localhost',user='root',password='Admin',db='dev')
-user=os.environ.get('RDS_USERNAME')
+mydb=mysql.connector.connect(host='localhost',user='root',password='Admin',db='dev')
+'''user=os.environ.get('RDS_USERNAME')
 db=os.environ.get('RDS_DB_NAME')
 password=os.environ.get('RDS_PASSWORD')
 host=os.environ.get('RDS_HOSTNAME')
@@ -21,7 +22,7 @@ with mysql.connector.connect(host=host,port=port,user=user,password=password,db=
     cursor=conn.cursor()
     cursor.execute('create table if not exists users(user_id varchar(6) not null,user_name varchar(30) primary key,email varchar(50) not null unique,password varchar(8))')
     cursor.execute('create table if not exists post(pid binary(16),title varchar(250) not null,descr longtext,img_id varchar(15),date timestamp not null default current_timestamp,addedby varchar(30),foreign key(addedby) references users(user_name))')
-mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)
+mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)'''
 @app.route('/')
 def home():
     cursor=mydb.cursor(buffered=True)
@@ -128,19 +129,51 @@ def create():
             title=request.form['title']
             desc=request.form['descr']
             img=request.files['img']
+            addedby=session.get('user')
             filename=uotp()+'.jpg'
             print(filename)
             img_path=os.path.dirname(os.path.abspath(__file__))
             static_path=os.path.join(img_path,'static')
             img.save(os.path.join(static_path,filename))
             cursor=mydb.cursor(buffered=True)
-            cursor.execute('insert into post(pid,title,descr,img_id) values(uuid_to_bin(uuid()),%s,%s,%s)',[title,desc,filename])
+            cursor.execute('insert into post(pid,title,descr,img_id,addedby) values(uuid_to_bin(uuid()),%s,%s,%s,%s)',[title,desc,filename,addedby])
             mydb.commit()
             cursor.close()
             return redirect(url_for('home'))
         return render_template('post.html')
     else:
         return redirect(url_for('login'))
+@app.route('/search',methods=['GET','POST'])
+def search():
+    if request.method=='POST':
+        name=request.form['search']
+        strg=['A-Za-z0-9']
+        pattern=re.compile(f'^{strg}', re.IGNORECASE)
+        if pattern.match(name):
+            cursor=mydb.cursor(buffered=True)
+            cursor.execute('select title,img_id,descr from post where title LIKE %s',[name + '%'])
+            data=cursor.fetchall()
+            cursor.close()
+            return render_template('home.html',data=data)
+        else:
+            return 'Result not found'
+    return render_template('home.html')
+@app.route('/accont',methods=['GET','POST'])
+def account():
+    addedby=session.get('user')
+    cursor=mydb.cursor(buffered=True)
+    cursor.execute('select title,img_id,descr from post where addedby=%s',[addedby])  
+    count1=cursor.fetchall()
+    print(count1)
+    cursor.close()
+    return render_template('user.html',count1=count1) 
+@app.route('/view/<pid>')
+def view(pid):
+    cursor=mydb.cursor()
+    cursor.execute('select title,img_id,descr from post where pid=uuid_to_bin(%s)',[pid])
+    data1=cursor.fetchone()
+    cursor.close()
+    return render_template('view.html',data1=data1)
 @app.route('/delete/<pid>')
 def delete(pid):
     if session.get('user'):
@@ -154,5 +187,5 @@ def share(pid):
     cursor=mydb.cursor(buffere=True)
     cursor.execute('select title,img_id,descr from post where pid=uuid_to_bin(%s)',[pid])
     cursor.close()
-if __name__=='__main__':
-    app.run()
+#if __name__=='__main__':
+app.run(debug=True,use_reloader=True)

@@ -23,7 +23,9 @@
         border:1px solid black;
       }
       *{
-        background-image:url('');
+        background-image:url('https://img.freepik.com/premium-photo/texture-white-snow-natural-winter-background-with-snow_87555-21256.jpg?size=626&ext=jpg&ga=GA1.1.1141204696.1698918890&semt=ais');
+        background-size:cover;
+        background-position: center;
        /* border:1px solid red;*/
       }
       .two{
@@ -32,6 +34,10 @@
         text-transform: capitalize;
         line-break: auto;
         word-break:break-all;
+      }
+      .i2{
+        background-color: white;
+        color:black;
       }
     </style>
 </head>
@@ -48,18 +54,13 @@
         <div class="container-fluid">
           <ul class="nav navbar-nav" id="go">
           <li class="qq"><i class="fa-solid"></i></li>
-          <li class="abc"> <form method="POST" action="#">
+          <li class="abc"> <form method="POST" action="{{url_for('search')}}">
             <input type="search"  name="search" placeholder="Search...">
             <button><i class="fa-solid fa-magnifying-glass"></i>Search</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </form></li>
-          <li class="dropdown" id="go"><a class="dropdown-toggle" data-toggle="dropdown" href="#" id="go"><i class="fa-solid fa-user">Account</i></a>
-            <ul class="dropdown-menu" id="go">
-              <li id="go"><a href="{{url_for('login')}}" id="go">Login</a></li>
-              <li id="go"><a href="{{url_for('create')}}" id="go">Create</a></li>
-            </ul>
-        </ul>
-        <li class="i2"><a href="{{url_for('logout')}}"><button>Logout</button></a></li>
-      </div>
+          <li id="go"><a href="{{url_for('account')}}" id="go">Account</a></li>
+          </ul>
+        </div>
         <center>
         <div class="card" style="width:50vw;">
             {% for i in data %}
@@ -71,8 +72,7 @@
                 <br>
                 <div class="col-12">
                 <div class="col-4 two">
-                  <p width="30px" class="d-flex flex-column justify-center align-center text-center" >{{i[2]}}</p>
- 
+                  <p width="30px" class="d-flex flex-column justify-center align-center text-center" >{{i[2]}}<a href="{{url_for('view',pid=i[3])}}">View more</a></p>
                 </div>  
                 </div>
                 {% if session.get('user') %}

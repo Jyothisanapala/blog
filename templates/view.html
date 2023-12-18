@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:large;
+      }
+      form{
+        padding-top:15px;
+      }
+      .container{
+        font-size:20px;
+      }
+      .carding{
+        border:1px solid black;
+      }
+      .two{
+        margin-left: 0% !important;
+        text-transform: capitalize;
+        line-break: auto;
+        word-break:break-all;
+      }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="card" style="width:50vw;">
+            
+            <div class="col-12 col-md-12" ><br>
+              <div class="carding p-3">
+                <h2></b>{{data1[0]}}</h2><br>
+                <img src="{{url_for('static',filename=data1[1])}}" height="250vh" width="600vw"/>
+                <br>
+                <div class="col-12">
+                <div class="col-4 two">
+                  <p width="30px" class="d-flex flex-column justify-center align-center text-center" >{{data1[2]}}</p>
+                </div>  
+                </div>
+              </div>
+            </div>
+            
+        </div>
+    </center>
+</body>
+</html>
