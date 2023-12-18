@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='signup.css')}}"
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        <div class="form">
+            <h3>Sign Up</h3>
+            <div class="three">
+                <label>User Name</label><br>
+                <i class="four2"></i>
+                <input type="text" name="user" placeholder="Enter your Name">
+            </div><br><br>
+            <div class="three">
+                <label>Email</label><br>
+                <i class="four2"></i>
+                <input type="text" name="email" placeholder="Enter your Email Address">
+            </div><br><br>
+            <div class="three">
+                <label>Password</label><br>
+                <i class="four2"></i>
+                <input type="password" name="password" placeholder="Ener your Password">
+            </div><br><br><br>
+            <button>Sign Up</button><br>
+            <a href="#" target="_blank">Already Have An Account?</a>
+        </div>
+    </form>   
+</body>
+</html>

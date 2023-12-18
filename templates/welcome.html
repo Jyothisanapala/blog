@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #three{
+        background-image:url('https://img.freepik.com/free-photo/technology-communication-icons-symbols-concept_53876-120314.jpg?size=626&ext=jpg&ga=GA1.1.1141204696.1698918890&semt=ais');
+        background-size:cover;
+        align-items:center;
+        padding-top:40px;
+    }
+    h2{
+        color:white;
+    }
+    .container{
+        justify-content:center;
+        text-align: center;
+    }
+    .b31{
+        color:black;
+        background-color: greenyellow;
+        padding:20px;
+        border-radius: 8px;
+        border:none;
+        margin: 20px;
+        cursor: pointer;
+    }
+</style>
+<body id="three">
+    <div class="container">
+        <div class="image">
+            <h2><i>Customer Dev-Blog Application</i></h2><br>
+            <a href="{{url_for('signup')}}"><button class="b31">Signup</button></a>
+            <a href="{{url_for('login')}}"><button class="b31">Login</button></a>
+        </div>
+    </div>
+</body>
+</html>
