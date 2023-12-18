@@ -154,4 +154,5 @@ def share(pid):
     cursor=mydb.cursor(buffere=True)
     cursor.execute('select title,img_id,descr from post where pid=uuid_to_bin(%s)',[pid])
     cursor.close()
-app.run(debug=True,use_reloader=True)
+if __name__=='__main__':
+    app.run()
