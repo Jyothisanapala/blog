@@ -12,8 +12,8 @@ app=Flask(__name__)
 app.config['SESSION_TYPE']='filesystem'
 Session(app)
 app.secret_key=secret_key
-mydb=mysql.connector.connect(host='localhost',user='root',password='Admin',db='dev')
-'''user=os.environ.get('RDS_USERNAME')
+#mydb=mysql.connector.connect(host='localhost',user='root',password='Admin',db='dev')
+user=os.environ.get('RDS_USERNAME')
 db=os.environ.get('RDS_DB_NAME')
 password=os.environ.get('RDS_PASSWORD')
 host=os.environ.get('RDS_HOSTNAME')
@@ -22,7 +22,7 @@ with mysql.connector.connect(host=host,port=port,user=user,password=password,db=
     cursor=conn.cursor()
     cursor.execute('create table if not exists users(user_id varchar(6) not null,user_name varchar(30) primary key,email varchar(50) not null unique,password varchar(8))')
     cursor.execute('create table if not exists post(pid binary(16),title varchar(250) not null,descr longtext,img_id varchar(15),date timestamp not null default current_timestamp,addedby varchar(30),foreign key(addedby) references users(user_name))')
-mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)'''
+mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)
 @app.route('/')
 def home():
     cursor=mydb.cursor(buffered=True)
@@ -187,5 +187,5 @@ def share(pid):
     cursor=mydb.cursor(buffere=True)
     cursor.execute('select title,img_id,descr from post where pid=uuid_to_bin(%s)',[pid])
     cursor.close()
-#if __name__=='__main__':
-app.run(debug=True,use_reloader=True)
+if __name__=='__main__':
+    app.run()
