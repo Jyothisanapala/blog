@@ -24,6 +24,9 @@ with mysql.connector.connect(host=host,port=port,user=user,password=password,db=
     cursor.execute('create table if not exists post(pid binary(16),title varchar(250) not null,descr longtext,img_id varchar(15),date timestamp not null default current_timestamp,addedby varchar(30),foreign key(addedby) references users(user_name))')
 mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)
 @app.route('/')
+def index():
+    return render_template('welcome.html')
+@app.route('/home')
 def home():
     cursor=mydb.cursor(buffered=True)
     cursor.execute('select title,img_id,descr,bin_to_uuid(pid) from post')
